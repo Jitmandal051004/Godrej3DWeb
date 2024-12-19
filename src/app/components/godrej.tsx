@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Mesh } from "three";
 
@@ -11,8 +11,10 @@ function MeshComponent() {
     const mesh = useRef<Mesh>(null!);
     const gltf = useLoader(GLTFLoader, fileUrl);
 
+    gltf.scene.scale.set(0.02, 0.02, 0.02);
+
     useFrame(() => {
-        mesh.current.rotation.y += 0.01;
+        mesh.current.rotation.y += 0.005;
     });
 
     return (
@@ -24,14 +26,11 @@ function MeshComponent() {
 
 export function Godrej() {
     return (
-        <div className='flex justify-center items-center h-screen w-full'>
+        <div className='flex justify-center items-center h-[50%] lg:w-[67.5%] xl:w-[30%] bg-zinc-800 mt-9 rounded-2xl'>
             <Canvas className='h-full w-full aspect-square'>
-                <ambientLight intensity={Math.PI/2} />
-                <spotLight position={[10, 10, 10]} angle={130} penumbra={4} decay={0} intensity={Math.PI} />
-                <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+                <PerspectiveCamera/>
+                <Environment preset="city"/>
                 <OrbitControls />
-                {/* <ambientLight />
-                <pointLight position={[10, 10, 10]} scale={[100, 100, 100]}/> */}
                 <MeshComponent />
             </Canvas>
         </div>
